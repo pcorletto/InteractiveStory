@@ -38,7 +38,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:background="@android:color/white"
-        android:textColor="#FF3A8AEC"/>
+        android:textColor="#FF3A8AEC"
+        style="@style/WhiteButton"/>
 
     <Button
         android:layout_width="match_parent"
@@ -49,5 +50,6 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:background="@android:color/white"
-        android:textColor="#FF3A8AEC"/>
+        android:textColor="#FF3A8AEC"
+        style="@style/WhiteButton"/>
 </RelativeLayout>

@@ -26,7 +26,8 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:background="@android:color/white"
-        android:textColor="#FF3A8AEC"/>
+        android:textColor="#FF3A8AEC"
+        style="@style/WhiteButton"/>
 
     <EditText
         android:layout_width="match_parent"
