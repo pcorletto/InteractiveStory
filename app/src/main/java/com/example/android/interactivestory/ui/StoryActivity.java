@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -23,15 +24,12 @@ public class StoryActivity extends ActionBarActivity {
     private TextView mTextView;
     private Button mChoice1, mChoice2;
     private String mName;
+    private Page mCurrentPage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_story);
-        //mImageView = (ImageView) findViewById(R.id.storyImageView);
-        //mTextView = (TextView) findViewById(R.id.storyTextView);
-        //mChoice1 = (Button) findViewById(R.id.choiceButton1);
-        //mChoice2 = (Button) findViewById(R.id.choiceButton2);
 
         Intent intent = getIntent();
         mName = intent.getStringExtra(getString(R.string.key_name));
@@ -44,24 +42,59 @@ public class StoryActivity extends ActionBarActivity {
         mTextView = (TextView) findViewById(R.id.storyTextView);
         mChoice1 = (Button) findViewById(R.id.choiceButton1);
         mChoice2 = (Button) findViewById(R.id.choiceButton2);
-        loadPage();
+        loadPage(0);
 
     }
 
-    private void loadPage(){
-        Page page = mStory.getPage(0);
+    private void loadPage(int choice) {
+        mCurrentPage = mStory.getPage(choice);
 
-        Drawable drawable = getResources().getDrawable(page.getImageId());
+        Drawable drawable = getResources().getDrawable(mCurrentPage.getImageId());
         mImageView.setImageDrawable(drawable);
 
-        String pageText = page.getText();
+        String pageText = mCurrentPage.getText();
         //Add the name if placeholder included. Won't add if no placeholder
         pageText = String.format(pageText, mName);
         mTextView.setText(pageText);
 
-        mChoice1.setText(page.getChoice1().getText());
-        mChoice2.setText(page.getChoice2().getText());
+        if (mCurrentPage.isFinal()) {
+            //This hides Choice 1 button.
+            mChoice1.setVisibility(View.INVISIBLE);
+            //Change the text on Choice 2 to Play Again.
+            mChoice2.setText("PLAY AGAIN");
+            mChoice2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // This takes us back to initial screen, MainActivity, instead of using an Intent
+                    finish();
+                }
+            });
 
+
+        }
+
+        else {
+
+            mChoice1.setText(mCurrentPage.getChoice1().getText());
+            mChoice2.setText(mCurrentPage.getChoice2().getText());
+
+            mChoice1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int nextPage = mCurrentPage.getChoice1().getNextPage();
+                    loadPage(nextPage);
+                }
+            });
+
+            mChoice2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int nextPage = mCurrentPage.getChoice2().getNextPage();
+                    loadPage(nextPage);
+                }
+            });
+
+        }
     }
 
 

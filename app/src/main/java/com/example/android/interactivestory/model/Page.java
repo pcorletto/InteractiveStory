@@ -19,7 +19,7 @@ public class Page {
         mChoice2 = choice2;
     }
 
-    public Boolean getIsFinal() {
+    public Boolean isFinal() {
         return mIsFinal;
     }
 
